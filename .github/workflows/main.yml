@@ -1,0 +1,29 @@
+name: Build WF
+on: 
+  push: 
+    branches:
+      -main
+
+
+jobs: 
+  Build: 
+    runs-on: ubuntu-lastese
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Maven Build
+        run:  mvn install
+
+  Testing: 
+    runs-on: ubuntu-lastese
+    needs: Build
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests on main bracnhes
+        run:  mvn test
+
+      - name: Checkstyle
+        run:  mvn checkstyle:checkstyle
